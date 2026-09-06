@@ -78,7 +78,27 @@ public class InventoryService {
             throw new IllegalArgumentException("Quantity must be greater than 0");
         }
 
-        Product product = findProductEntity(identifier);
+        Product product;
+        try {
+            product = findProductEntity(identifier);
+        } catch (ProductNotFoundException e) {
+            // Auto-create product dynamically for new items (e.g. 'mouse', 'soap')
+            String cleanName = identifier.trim();
+            cleanName = cleanName.substring(0, 1).toUpperCase() + cleanName.substring(1);
+            ProductDto created = addProduct(
+                    cleanName,
+                    "piece",
+                    true,
+                    costPrice != null ? costPrice : new BigDecimal("50.00"),
+                    mrp != null ? mrp : new BigDecimal("60.00"),
+                    mrp != null ? mrp : new BigDecimal("60.00"),
+                    BigDecimal.ZERO,
+                    new BigDecimal("5.000"),
+                    new BigDecimal("18.00"),
+                    "9999"
+            );
+            product = productRepository.findById(created.getId()).orElseThrow();
+        }
 
         if (costPrice != null && costPrice.compareTo(BigDecimal.ZERO) > 0) {
             product.setCostPrice(costPrice.setScale(2, RoundingMode.HALF_UP));

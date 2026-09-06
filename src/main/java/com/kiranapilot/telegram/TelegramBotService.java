@@ -185,6 +185,19 @@ public class TelegramBotService {
         }
     }
 
+    private Map<String, Object> getSuggestionsKeyboard() {
+        return Map.of(
+                "keyboard", List.of(
+                        List.of(Map.of("text", "🛒 Make a Bill"), Map.of("text", "📦 Check Stock")),
+                        List.of(Map.of("text", "📥 Receive Stock"), Map.of("text", "👤 Khata Balance")),
+                        List.of(Map.of("text", "📊 Today's Sales"), Map.of("text", "🧾 Invoice as PDF")),
+                        List.of(Map.of("text", "📈 Analysis Deck"), Map.of("text", "🔄 /new"))
+                ),
+                "resize_keyboard", true,
+                "persistent", true
+        );
+    }
+
     public void sendTextMessage(long chatId, String text) {
         if (botToken == null || botToken.trim().isEmpty()) {
             log.info("[Local Bot Text - Chat {}]: {}", chatId, text);
@@ -196,7 +209,8 @@ public class TelegramBotService {
             Map<String, Object> body = Map.of(
                     "chat_id", chatId,
                     "text", text,
-                    "parse_mode", "Markdown"
+                    "parse_mode", "Markdown",
+                    "reply_markup", getSuggestionsKeyboard()
             );
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
@@ -206,7 +220,11 @@ public class TelegramBotService {
             log.warn("Markdown send failed, falling back to plain text: {}", e.getMessage());
             try {
                 String url = "https://api.telegram.org/bot" + botToken + "/sendMessage";
-                Map<String, Object> body = Map.of("chat_id", chatId, "text", text);
+                Map<String, Object> body = Map.of(
+                        "chat_id", chatId,
+                        "text", text,
+                        "reply_markup", getSuggestionsKeyboard()
+                );
                 restTemplate.postForEntity(url, new HttpEntity<>(body), String.class);
             } catch (Exception ex) {
                 log.error("Failed to send telegram text message", ex);
