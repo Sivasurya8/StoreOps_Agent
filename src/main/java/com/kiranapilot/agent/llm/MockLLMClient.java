@@ -239,7 +239,7 @@ public class MockLLMClient implements LLMClient {
         if (calls.isEmpty()) {
             return LLMResponse.builder()
                     .content("""
-                            👋 *Namaste! I am KiranaPilot, your store operations agent.*
+                            👋 *Namaste! I am StoreOps Agent, your AI supermarket operations assistant.*
 
                             You can speak naturally to me like a real shopkeeper:
                             • 📥 *Receive Stock*: `add stock mouse 10 items` or `50 packets of Maggi came in, cost 12, MRP 14`

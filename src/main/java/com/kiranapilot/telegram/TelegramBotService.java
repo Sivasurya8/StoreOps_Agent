@@ -125,11 +125,11 @@ public class TelegramBotService {
             // 2. Handle commands
             if (cleanText.equalsIgnoreCase("/start")) {
                 sendTextMessage(chatId, """
-                        🛒 *Welcome to KiranaPilot!*
-                        Your autonomous AI Supermarket Operations Agent.
+                        🛒 *Welcome to StoreOps Agent!*
+                        Your autonomous AI Supermarket & Retail Operations Assistant.
 
-                        Operate your store in plain, natural English:
-                        • *Receive Stock*: `50 packets of Maggi came in, cost 12, MRP 14`
+                        Operate your store in plain, natural speech or tap any button below:
+                        • *Receive Stock*: `add stock mouse 10 items` or `50 packets of Maggi came in, cost 12, MRP 14`
                         • *Cut a Bill*: `make a bill 2kg sugar, 1 Aashirvaad atta 5kg, 4 Maggi, UPI`
                         • *Mid-Bill Edit*: `drop the butter, make it 6 Maggi`
                         • *Khata Credit*: `put 500 on Ramesh's credit` | `Ramesh paid 300`

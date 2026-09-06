@@ -1,6 +1,10 @@
-# 🛒 KiranaPilot – AI Supermarket Operations Agent
+# 🛒 StoreOps Agent – AI Supermarket & Retail Operations Assistant
 
-> **An autonomous conversational agent that runs an Indian kirana store / supermarket end-to-end through Telegram chat only — with an agent, not a menu.**
+<p align="center">
+  <img src="storeops_agent_avatar.jpg" alt="StoreOps Agent" width="200" style="border-radius: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.3);"/>
+</p>
+
+> **An autonomous conversational agent that runs a supermarket & Indian kirana store end-to-end through Telegram chat only — with an agent, not a menu.**
 
 [![Java 17](https://img.shields.io/badge/Java-17-orange.svg)](https://openjdk.org/)
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.3.3-brightgreen.svg)](https://spring.io/projects/spring-boot)
@@ -9,9 +13,9 @@
 
 ---
 
-## 🤖 Telegram Bot Handle
+## 🤖 Live Telegram Bot
 
-- **Live Telegram Bot**: [@MyKiranaPilot_bot](https://t.me/MyKiranaPilot_bot)
+- **Live Telegram Bot Handle**: [@MyKiranaPilot_bot](https://t.me/MyKiranaPilot_bot)
 
 ---
 
