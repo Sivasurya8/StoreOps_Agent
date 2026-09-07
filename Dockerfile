@@ -16,6 +16,7 @@ USER kiranapilot
 
 COPY --from=build /app/target/kirana-pilot-agent-1.0.0.jar app.jar
 
+ENV PORT=8080
 EXPOSE 8080
 
 ENTRYPOINT ["java", "-Djava.security.egd=file:/dev/./urandom", "-jar", "app.jar"]

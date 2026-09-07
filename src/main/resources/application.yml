@@ -7,6 +7,12 @@ spring:
     username: ${SPRING_DATASOURCE_USERNAME:postgres}
     password: ${SPRING_DATASOURCE_PASSWORD:postgres}
     driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 5
+      minimum-idle: 1
+      connection-timeout: 20000
+      idle-timeout: 30000
+      max-lifetime: 1800000
 
   jpa:
     hibernate:
@@ -16,7 +22,7 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
-        format_sql: true
+        format_sql: false
 
   flyway:
     enabled: true
@@ -25,6 +31,7 @@ spring:
 
 server:
   port: ${PORT:8080}
+  address: 0.0.0.0
 
 # KiranaPilot Configuration
 kiranapilot:
