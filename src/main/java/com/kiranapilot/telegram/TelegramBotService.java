@@ -47,10 +47,16 @@ public class TelegramBotService {
 
     @PostConstruct
     public void init() {
-        if (botToken == null || botToken.trim().isEmpty()) {
+        if (botToken != null) {
+            botToken = botToken.trim();
+        }
+        if (botToken == null || botToken.isEmpty()) {
             log.warn("Telegram bot token is not configured. Telegram bot polling will remain idle.");
             return;
         }
+
+        String masked = botToken.length() > 8 ? botToken.substring(0, 10) + "..." + botToken.substring(botToken.length() - 4) : "***";
+        log.info("Telegram Bot configured with token: {}", masked);
 
         if (pollingEnabled) {
             startPolling();
