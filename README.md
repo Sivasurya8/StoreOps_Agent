@@ -224,3 +224,50 @@ Shopkeeper: make this week's sales analysis deck
 Agent:      Generated Weekly Sales & Inventory Analysis Presentation Deck.
             [Attached: KiranaPilot_Sales_Analysis_Deck.pptx]
 ```
+
+---
+
+## 8. Cloud Deployment & Privacy Architecture
+
+**StoreOps Agent** is built for 24/7 cloud availability with a strict privacy-first security model.
+
+### 🌐 Deployment Stack (100% Cloud-Native & Free Tier Compatible)
+
+```
+┌─────────────────────────┐          ┌──────────────────────────┐
+│   Telegram Cloud API    │ ◄──────► │    Render Web Service    │
+│  (@MyKiranaPilot_bot)   │  Polling │  • Docker (Java 17 JRE)  │
+└─────────────────────────┘          │  • Spring Boot 3.3.3     │
+                                     │  • Health Check (/health)│
+                                     └─────────────┬────────────┘
+                                                   │
+                                                   ▼
+                                     ┌──────────────────────────┐
+                                     │   Neon PostgreSQL DB     │
+                                     │  • Serverless PG 17 / 16 │
+                                     │  • SSL Connection Pool   │
+                                     │  • Flyway Auto-Migration │
+                                     └──────────────────────────┘
+```
+
+### 🔐 Privacy & Security Model
+
+1. **Zero Secret Footprint in Source Code**:
+   - No bot tokens, API keys, or database credentials exist in the Git repository.
+   - Configuration is dynamically injected at runtime via Environment Variables:
+
+| Environment Variable | Description | Example / Recommended Value |
+| :--- | :--- | :--- |
+| `SPRING_DATASOURCE_URL` | PostgreSQL JDBC connection URL | `jdbc:postgresql://<host>:5432/<dbname>?sslmode=require` |
+| `SPRING_DATASOURCE_USERNAME` | Database username | *(Private DB Username)* |
+| `SPRING_DATASOURCE_PASSWORD` | Database password | *(Private DB Password)* |
+| `TELEGRAM_BOT_TOKEN` | Bot API Token from @BotFather | *(Private Bot Token)* |
+| `TELEGRAM_BOT_USERNAME` | Telegram Bot Username Handle | `MyKiranaPilot_bot` |
+| `AI_PROVIDER` | AI Engine (`mock` or `gemini`) | `mock` *(Default zero-cost engine)* |
+| `PORT` | Container HTTP binding port | `8080` |
+
+2. **Local Isolation (`.gitignore`)**:
+   - Local `.env` and `*.env.local` files are blacklisted in `.gitignore` to prevent accidental credential commits.
+3. **Data Protection & Isolated Ledger**:
+   - Store transaction logs and khata credit balances are persisted strictly inside the private database instance.
+   - When running in default `mock` mode, NLP processing is handled locally within the JVM without transmitting store data to third-party AI APIs.
