@@ -36,7 +36,7 @@ kiranapilot:
     state: ${STORE_STATE:Karnataka}
     state-code: ${STORE_STATE_CODE:29}
   telegram:
-    bot-token: ${TELEGRAM_BOT_TOKEN:8884711474:AAEwVSSiaprvSdTDKa8Zes356dh3dezorFo}
+    bot-token: ${TELEGRAM_BOT_TOKEN:}
     bot-username: ${TELEGRAM_BOT_USERNAME:MyKiranaPilot_bot}
     polling-enabled: ${TELEGRAM_POLLING_ENABLED:true}
   ai:
