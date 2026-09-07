@@ -55,7 +55,9 @@ public class TelegramBotService {
             return;
         }
 
-        String masked = botToken.length() > 8 ? botToken.substring(0, 10) + "..." + botToken.substring(botToken.length() - 4) : "***";
+        String masked = botToken.length() > 8
+                ? botToken.substring(0, 10) + "..." + botToken.substring(botToken.length() - 4)
+                : "***";
         log.info("Telegram Bot configured with token: {}", masked);
 
         if (pollingEnabled) {
@@ -72,7 +74,8 @@ public class TelegramBotService {
     }
 
     public synchronized void startPolling() {
-        if (running.get()) return;
+        if (running.get())
+            return;
         running.set(true);
         pollingExecutor = Executors.newSingleThreadExecutor();
         pollingExecutor.submit(this::pollUpdatesLoop);
@@ -115,12 +118,14 @@ public class TelegramBotService {
 
     public void handleUpdate(JsonNode update, long updateId) {
         try {
-            if (!update.has("message")) return;
+            if (!update.has("message"))
+                return;
             JsonNode message = update.path("message");
             long chatId = message.path("chat").path("id").asLong();
             String text = message.path("text").asText(null);
 
-            if (text == null || text.trim().isEmpty()) return;
+            if (text == null || text.trim().isEmpty())
+                return;
 
             // 1. Idempotency Check: Prevent duplicate processing of redelivered updates
             if (processedMessageRepository.existsById(updateId)) {
@@ -152,7 +157,8 @@ public class TelegramBotService {
 
             if (cleanText.equalsIgnoreCase("/new")) {
                 agentOrchestrator.clearSession(chatId);
-                sendTextMessage(chatId, "🔄 *Conversation session cleared.* Store memory & standing preferences are preserved. How can I help?");
+                sendTextMessage(chatId,
+                        "🔄 *Conversation session cleared.* Store memory & standing preferences are preserved. How can I help?");
                 return;
             }
 
@@ -162,7 +168,7 @@ public class TelegramBotService {
                         • `/start` - Start bot and show introduction
                         • `/new` - Reset current conversation context
                         • `/help` - Show this assistance guide
-                        
+
                         *Natural Language Examples:*
                         1. `50 packets of Maggi came in, cost 12, MRP 14`
                         2. `make a bill 2kg sugar, 4 Maggi, UPI`
@@ -186,7 +192,8 @@ public class TelegramBotService {
 
             // 4. Send Document Attachment if generated
             if (result.getDocumentAttachment() != null && result.getAttachmentFilename() != null) {
-                sendDocumentMessage(chatId, result.getDocumentAttachment(), result.getAttachmentFilename(), result.getAttachmentMimeType());
+                sendDocumentMessage(chatId, result.getDocumentAttachment(), result.getAttachmentFilename(),
+                        result.getAttachmentMimeType());
             }
 
         } catch (Exception e) {
@@ -200,11 +207,9 @@ public class TelegramBotService {
                         List.of(Map.of("text", "🛒 Make a Bill"), Map.of("text", "📦 Check Stock")),
                         List.of(Map.of("text", "📥 Receive Stock"), Map.of("text", "👤 Khata Balance")),
                         List.of(Map.of("text", "📊 Today's Sales"), Map.of("text", "🧾 Invoice as PDF")),
-                        List.of(Map.of("text", "📈 Analysis Deck"), Map.of("text", "🔄 /new"))
-                ),
+                        List.of(Map.of("text", "📈 Analysis Deck"), Map.of("text", "🔄 /new"))),
                 "resize_keyboard", true,
-                "persistent", true
-        );
+                "persistent", true);
     }
 
     public void sendTextMessage(long chatId, String text) {
@@ -219,8 +224,7 @@ public class TelegramBotService {
                     "chat_id", chatId,
                     "text", text,
                     "parse_mode", "Markdown",
-                    "reply_markup", getSuggestionsKeyboard()
-            );
+                    "reply_markup", getSuggestionsKeyboard());
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
             HttpEntity<Map<String, Object>> entity = new HttpEntity<>(body, headers);
@@ -232,8 +236,7 @@ public class TelegramBotService {
                 Map<String, Object> body = Map.of(
                         "chat_id", chatId,
                         "text", text,
-                        "reply_markup", getSuggestionsKeyboard()
-                );
+                        "reply_markup", getSuggestionsKeyboard());
                 restTemplate.postForEntity(url, new HttpEntity<>(body), String.class);
             } catch (Exception ex) {
                 log.error("Failed to send telegram text message", ex);
